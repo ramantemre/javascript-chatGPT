@@ -7,13 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script>
-        const apiUrl = "https://api.openai.com/v1/chat/completitions"
-        const apiKey = ""
+        const apiUrl = "https://api.openai.com/v1/chat/completions"
+        const apiKey = "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"
 
         async function postData() {
             const message = document.getElementById('message').value
 
-            console.log('mess ==>', message)
+            console.log('entered message ==>', message)
 
             fetch(apiUrl, {
                 method: "POST",
@@ -22,19 +22,19 @@
                     "Authorization": `Bearer ${apiKey}`
                 },
                 body: JSON.stringify({
-                    "model": "gpt-3.5.turbo",
+                    "model": "gpt-3.5-turbo",
                     "messages": [{
                         "role": "user",
-                        "content": `write js code, ques ${message}`
+                        "content": `write a javascript code for this question: ${message}`
                     }]
                 })
-            }).then((res) =>
-                res.json()
-            ).then((data) => {
-                console.log("data", data)
+            }).then((res) => res.json()).then((data) => {
+                console.log("response data ==>", data)
                 const response = data.choices[0].message.content.trim()
                 const card = document.createElement('pre')
                 card.innerHTML = response
+                document.getElementById('chat-area').appendChild(card)
+                document.getElementById('chat-area').classList.add('dark')
             })
         }
     </script>
@@ -57,23 +57,24 @@
         }
 
         .dark {
-            background-color: #000;
+            background-color: #292929;
             color: white;
+            margin: 10px;
+            padding: 10px;
         }
     </style>
 </head>
-<h1>Get any code solution in js</h1>
-<form action="">
-    <label for="message">
-        Enter code message
-    </label>
-    <textarea class="input" name="message" id="message" cols="30" rows="10"></textarea>
-    <button type="button" onclick="postData()">Send me</button>
-    <div class="code-area"></div>
-</form>
 
 <body>
-
+    <h1>Get any code solution in javascript using chatGPT</h1>
+    <form action="">
+        <label for="message">
+            Enter code question
+        </label>
+        <textarea class="input" name="message" id="message" cols="30" rows="10"></textarea>
+        <button type="button" onclick="postData()">Send me</button>
+        <div id="chat-area"></div>
+    </form>
 </body>
 
 </html>
